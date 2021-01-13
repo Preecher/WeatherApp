@@ -1,22 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using System;
 
 namespace Weather.Repos
 {
     public class ContextFactory : IDesignTimeDbContextFactory<WeatherContext>
     {
-        private readonly IConfiguration _config;
-        private static string _connString;
-
-        public ContextFactory(IConfiguration config)
-        {
-            _config = config;
-        }
-
         public WeatherContext CreateDbContext(string[] args)
         {
-            _connString = _config.GetConnectionString("SqlConnectionString");
+            //var _connString = _config.GetConnectionString("SqlConnectionString");
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Environment.CurrentDirectory)
+                .AddJsonFile("appsettings.json", optional: true)
+                .AddEnvironmentVariables()
+                .Build();
+
+            var _connString = config.GetConnectionStringOrSetting("SqlConnectionString");
 
             var builder = new DbContextOptionsBuilder<WeatherContext>();
             builder.UseSqlServer(_connString);
