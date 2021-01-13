@@ -52,7 +52,7 @@ namespace WeatherApp
                 return new BadRequestObjectResult("Weather data not found for zipcode: " + zipCode);
             }
 
-            ZipWeather weather = BuildWeatherData(zipCode, data);
+            DataRequest weather = BuildWeatherData(zipCode, data);
 
             var response = await _dataService.CreateWeatherData(weather);
 
@@ -73,23 +73,27 @@ namespace WeatherApp
 
         }
 
-        private ZipWeather BuildWeatherData(string zipCode, Weather.Services.Model.WeatherMapResponse data)
+        private DataRequest BuildWeatherData(string zipCode, Weather.Services.Model.WeatherMapResponse data)
         {
-            var weather = new ZipWeather
+            var weather = new DataRequest
             {
-                City = data.Name,
-                Country = data.Sys.Country,
-                WeatherDescription = data.Weather.FirstOrDefault().Description,
-                Temp = data.Main.Temp,
-                TempLow = data.Main.TempMin,
-                TempHigh = data.Main.TempMax,
-                WindSpeed = string.Concat(data.Wind.Speed, " mph ", DegreesToCardinal(data.Wind.Degrees)),
-                Cloud = string.Concat(data.Clouds.All, " %"),
-                Pressure = string.Concat(data.Main.Pressure, " mm"),
-                Longitude = data.Coord.Lon,
-                Latitude = data.Coord.Lat,
-                WeatherDate = FromUnixTime(data.Dt).ToLocalTime(),
-                DataRequest = new DataRequest { ZipCode = zipCode, RequestDate = DateTime.Now}
+                ZipCode = zipCode,
+                RequestDate = DateTime.Now,
+                ZipWeather = new ZipWeather
+                {
+                    City = data.Name,
+                    Country = data.Sys.Country,
+                    WeatherDescription = data.Weather.FirstOrDefault().Description,
+                    Temp = data.Main.Temp,
+                    TempLow = data.Main.TempMin,
+                    TempHigh = data.Main.TempMax,
+                    WindSpeed = string.Concat(data.Wind.Speed, " mph ", DegreesToCardinal(data.Wind.Degrees)),
+                    Cloud = string.Concat(data.Clouds.All, " %"),
+                    Pressure = string.Concat(data.Main.Pressure, " mm"),
+                    Longitude = data.Coord.Lon,
+                    Latitude = data.Coord.Lat,
+                    WeatherDate = FromUnixTime(data.Dt).ToLocalTime(),
+                }
             };
             return weather;
         }

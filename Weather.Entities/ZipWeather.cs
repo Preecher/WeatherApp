@@ -19,7 +19,7 @@ namespace Weather.Entities
         public double Longitude { get; set; }
         public double Latitude { get; set; }
         public DateTime WeatherDate { get; set; }
-        public DataRequest DataRequest { get; set; }
+        //public DataRequest DataRequest { get; set; }
     }
 
     public class DataRequest
@@ -28,5 +28,6 @@ namespace Weather.Entities
         public int Id { get; set; }
         public string ZipCode { get; set; }
         public DateTime RequestDate { get; set; }
+        public ZipWeather ZipWeather { get; set; }
     }
 }

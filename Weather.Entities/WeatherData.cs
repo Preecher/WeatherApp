@@ -4,6 +4,6 @@ namespace Weather.Entities
 {
     public class WeatherData
     {
-        public List<ZipWeather> ZipWeathers { get; set; }
+        public List<DataRequest> ZipWeathers { get; set; }
     }
 }

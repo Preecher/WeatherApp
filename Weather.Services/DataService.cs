@@ -15,10 +15,10 @@ namespace Weather.Services
             _context = context;
         }
 
-        public async Task<ZipWeather> CreateWeatherData(ZipWeather weather)
+        public async Task<DataRequest> CreateWeatherData(DataRequest weather)
         {
-            var newRecord = await _context.ZipWeather.AddAsync(weather);
-            ZipWeather response = newRecord.Entity;
+            var newRecord = await _context.DataRequest.AddAsync(weather);
+            DataRequest response = newRecord.Entity;
             
             await _context.SaveChangesAsync();
       
@@ -29,7 +29,7 @@ namespace Weather.Services
         {   
             var response = new WeatherData();
             
-            var data = await _context.ZipWeather.Include(a => a.DataRequest).ToListAsync();
+            var data = await _context.DataRequest.Include(a => a.ZipWeather).ToListAsync();
 
             response.ZipWeathers = data;
             
